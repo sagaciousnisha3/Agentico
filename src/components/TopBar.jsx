@@ -7,7 +7,7 @@ const SYNC_LABELS = {
   error: { text: '⚠ sync error', cls: 'text-danger' },
 }
 
-export default function TopBar({ syncStatus, apiKey, onSaveKey }) {
+export default function TopBar({ user, syncStatus, apiKey, onSignOut, onOpenAuth, onSaveKey }) {
   const [keyVal, setKeyVal] = useState(apiKey || localStorage.getItem('agentco_api_key') || '')
   const [keySaved, setKeySaved] = useState(!!apiKey)
 
@@ -55,6 +55,26 @@ export default function TopBar({ syncStatus, apiKey, onSaveKey }) {
 
         {/* Sync status */}
         <span className={`text-xs ${sync.cls}`}>{sync.text}</span>
+
+        {/* Auth */}
+        {user?.email ? (
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-success">{user.email.split('@')[0]}</span>
+            <button
+              onClick={onSignOut}
+              className="h-7 px-3 text-xs rounded-lg border border-white/12 text-white/50 hover:text-white hover:bg-bg3 transition-all"
+            >
+              Sign out
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={onOpenAuth}
+            className="h-7 px-3 text-xs rounded-lg border border-accent text-accent2 hover:bg-accent/10 transition-all"
+          >
+            Sign in
+          </button>
+        )}
       </div>
     </div>
   )
